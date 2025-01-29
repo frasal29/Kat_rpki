@@ -1,0 +1,16 @@
+dash
+plotly
+networkx
+pydot
+flask
+kathara
+subprocess
+os
+json
+re
+logging
+random
+shutil
+time
+requests
+docker

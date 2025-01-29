@@ -1,0 +1,11 @@
+{
+    "relations_file": "20241101_as-rel2.txt",
+    "specified_as": "51028",
+    "show_statistics_ccone": true,
+    "random_configuration": true,
+    "adoption_rpki": 90,
+    "adoption_collector_peer": 10,
+    "prefer_customer": true,
+    "invalid_prefixes_in_bgp_table": true
+  }
+  

@@ -1,0 +1,27 @@
+html, body, .app-container {
+    /* Ensure the container occupies the full height of the screen */
+    height: 100%;
+    /* Remove any default margins and paddings for a clean layout */
+    margin: 0;
+    padding: 0;
+    /* Prevent scrollbars from appearing */
+    overflow: hidden;
+}
+
+.dash-graph {
+    /* Set a dynamic height for the graph, subtracting 50px for spacing or other elements */
+    height: calc(100vh - 50px);
+    /* Make the graph take up the full width of its container */
+    width: 100%;
+    /* Remove any default margins for cleaner positioning */
+    margin: 0;
+    /* Remove padding to ensure alignment with container edges */
+    padding: 0;
+}
+
+.dash-graph > .plotly {
+    /* Remove any default margins applied by Plotly for a seamless layout */
+    margin: 0 !important;
+    /* Remove any default padding applied by Plotly */
+    padding: 0 !important;
+}
