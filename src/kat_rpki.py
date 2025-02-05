@@ -19,7 +19,6 @@ import parse_as_graph
 import attack
 import bgp_convergence
 import bgp_aspath_check
-import docker
 import statistics_customer_cone
 import random
 

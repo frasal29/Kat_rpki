@@ -224,7 +224,7 @@ def run_dash_app(as_data, start_configuration):
 
             # Determine the fill color based on node type
             if node in selected_red_node:
-                node_color = 'tomato'  # Hacker
+                node_color = 'darkred'  # Hacker
             elif node in selected_green_node:
                 node_color = 'green'  # Victim
             else:

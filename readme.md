@@ -46,15 +46,19 @@ This project implements a simulation framework for BGP announcements and RPKI ad
 
    - `lab_collision_domain.py`: Configures routers and links in a simulated lab environment.
 
-### Outputs
+### Generated Outputs
 
-- **Generated Files**: Includes configurations, logs, and attack simulation results.
-- **JSON Outputs**:
-  - `as_graph.json`: Parsed AS graph.
-  - `customer_cone.json`: Customer cone for the selected AS.
-  - `statistics_customer_cone.json`: Statistical data about the customer cone.
-  - `neighbor_dict.json`: Dictionary of AS neighbors.
-  - `Collision_domains.json`: Collision domain mappings.
+- **Generated JSON Files**:
+  - `as_graph.json`: parsed AS graph.
+  - `customer_cone.json`: customer cone for the selected AS.
+  - `statistics_customer_cone.json`: statistical data about the customer cone.
+  - `neighbor_dict.json`: dictionary of AS neighbors.
+  - `Collision_domains.json`: collision domain mappings.
+  - `saved_nodes.json`: saved nodes data during simulation.
+  - `bgp_analysis_results.json`: results from BGP path analysis.
+
+- **Generated Directory**:
+  - `lab_customer_cone/`: contains all router startup files and BGP configurations, which can be executed using Kathara from the command line.
 
 ---
 
@@ -143,15 +147,40 @@ The Dash GUI shows the impact of RPKI adoption, attack simulations, and customer
 
 ---
 
-## Requirements
+### Dependencies
 
-- **Kathara**: For lab simulation.
-- **Docker**: To run containerized routers and RPKI servers.
-- **Python Packages**: Listed in the `requirements.txt` file.
+The following dependencies must be installed:
+
+```bash
+pip install -r requirements.txt
+```
+
+**File `requirements.txt` contains:**
+- pip
+- dash
+- dash_bootstrap_components
+- networkx
+- pygraphviz
+- kathara
+
+### Creating a Virtual Environment
+
+If you encounter issues installing dependencies, it is recommended to create a Python virtual environment:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # On Linux/macOS
+.venv\Scripts\activate  # On Windows
+pip install -r requirements.txt
+```
+
+### Issues with `pygraphviz`
+
+If you experience problems installing the `pygraphviz` dependency, follow the installation instructions on the official page: [PyGraphviz Installation Guide](https://pygraphviz.github.io/documentation/stable/install.html).
 
 ---
 
-## How to Run
+## Running the Project
 
 1. Set up the environment:
    ```bash

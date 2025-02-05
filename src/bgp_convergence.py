@@ -45,12 +45,12 @@ def wait_for_convergence(routers, routers_count, lab, check_interval=5, max_wait
                 if result is not None:
                     result = result.decode('utf-8')
                 else:
-                    print(f"Errore su {machine.name}: nessun output ricevuto.")
+                    print(f"Error on {machine.name}: no output received.")
                     all_converged = False  # if there's no output, consider the convergence not reached
                     continue  # Pass to the next router
 
             except Exception as e:
-                print(f"Errore su {machine.name}: {str(e)}")
+                print(f"Errore on {machine.name}: {str(e)}")
                 all_converged = False  # If there's an exception, consider the convergence not reached
                 continue  # Pass to the next router
 
@@ -105,6 +105,7 @@ def execute_attack(routers, hacker_router, lab):
     machine = routers[hacker_router] 
     execute_command_in_container(machine.name, lab, command) 
     print("Attack executed successfully!")
+
 
 def ensure_bgp_convergence_and_execute_attack(routers, routers_count, lab, target_container_name):
     """
