@@ -226,7 +226,7 @@ def run_dash_app(as_data, start_configuration):
             if node in selected_red_node:
                 node_color = 'darkred'  # Hacker
             elif node in selected_green_node:
-                node_color = 'green'  # Victim
+                node_color = 'greenyellow'  # Victim
             else:
                 node_color = 'SkyBlue'  # Default color
 
@@ -614,6 +614,7 @@ def run_dash_app(as_data, start_configuration):
                 return {"background-color": "lightgrey"}, is_error_modal_open, False
 
             if trigger == "confirm-save-button" and n_clicks_confirm > 0:
+                confirm_modal_state = False
                 # Save the configuration and terminate the server
                 with open("output/saved_nodes.json", "w") as f:
                     json.dump({
@@ -626,7 +627,14 @@ def run_dash_app(as_data, start_configuration):
                 with open("terminate.flag", "w") as f:
                     f.write("terminate")
 
-                shutdown_server()
+                # Close the confirmation modal first
+                def delayed_shutdown():
+                    import time
+                    time.sleep(1)  # Delay before shutting down the server
+                    shutdown_server()
+
+                threading.Thread(target=delayed_shutdown).start()
+                return dash.no_update, dash.no_update, confirm_modal_state  # Il popup si chiude subito
 
         return {"background-color": "white"}, is_error_modal_open, is_confirm_modal_open
 
