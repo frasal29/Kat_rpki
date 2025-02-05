@@ -46,6 +46,40 @@ This project implements a simulation framework for BGP announcements and RPKI ad
 
    - `lab_collision_domain.py`: Configures routers and links in a simulated lab environment.
 
+### Docker Images for Kathara Lab
+
+To run the Kathara lab, you need to build and use three Docker images:
+
+#### FRR Image
+- **Purpose**: This image is used for routers that do not implement RPKI validation.
+- **Build Command**:
+  ```bash
+  docker build -t "kathara/frr3" ./dockerfile/frr-fix-validation/
+  ```
+
+#### Routinator Image
+- **Purpose**: This image is used for routers that validate prefixes using RPKI.
+- **Build Command**:
+  ```bash
+  docker build -t "kathara/routinator3" ./dockerfile/routinator/
+  ```
+
+#### Krill Image
+- **Purpose**: This image is used exclusively for the Krill server, responsible for generating Route Origin Authorizations (ROAs).
+- **Build Command**:
+  ```bash
+  docker build -t "kathara/krill3" ./dockerfile/krill/
+  ```
+
+To build all the required images at once, you can run the script located in the `dockerfile` directory:
+```bash
+bash dockerfile/build-images.sh
+```
+
+These images are essential to create the router containers and the Krill server within the Kathara environment.
+
+---
+
 ### Generated Outputs
 
 - **Generated JSON Files**:
@@ -130,6 +164,7 @@ The Dash GUI shows the impact of RPKI adoption, attack simulations, and customer
 | `daemons.py`                  | Creates `daemons` files for routers.                |
 | `frr.py`                      | Generates FRRouting configurations.                 |
 | `startup.py`                  | Creates startup scripts for routers.                |
+| `roa_entry.py`                | Generates a list of ROAs based on the AS dictionary.|
 | `lab_collision_domain.py`     | Configures routers and links in the simulated lab.  |
 | `attack.py`                   | Creates attack simulation scripts.                  |
 | `bgp_convergence.py`          | Ensures BGP route convergence.                      |

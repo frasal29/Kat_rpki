@@ -1,4 +1,3 @@
-import docker
 import json
 import app_result
 from Kathara.manager.Kathara import Kathara

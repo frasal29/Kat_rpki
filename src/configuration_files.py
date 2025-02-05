@@ -1,4 +1,3 @@
-
 def gen_routinator_conf():
     """
     Generates the configuration content for Routinator.
