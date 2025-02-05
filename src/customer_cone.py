@@ -72,7 +72,7 @@ def create_specified_customer_cone(graph, specified_AS):
     """
     # Build the Customer Cone
     customer_cone = build_customer_cone(graph, specified_AS)
-    path_file = "customer_cone.json"  # Path to save the JSON file
+    path_file = "output/customer_cone.json"  # Path to save the JSON file
 
     # Save the result to a JSON file
     with open(path_file, "w") as outfile:

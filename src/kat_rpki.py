@@ -119,7 +119,7 @@ def gen_certificates(input_file):
     """
     print("\nGenerating certificates...")
     # Create the certificates directory if it does not exist
-    certificates_dir = f"lab_{input_file}/certificates"
+    certificates_dir = f"output/lab_{input_file}/certificates"
     os.makedirs(certificates_dir, exist_ok=True)
 
     # Generate certificates in the certificates directory
@@ -200,7 +200,7 @@ def copy_file(source_path, output_directory, output_file_name):
     shutil.copy(source_path, destination_path)
 
 # Configures BGP in routers using frr.conf and daemons files
-def move_configurations_file(routers, krill, address_krill, image_frr, image_routinator, image_krill, input_file):
+def move_configurations_file(routers, krill, address_krill, image_frr, image_routinator, image_krill, input_file, hacker_node, victim_node, neighbor_dict):
     """
     Moves and configures necessary files for routers, RPKI servers, and other components.
 
@@ -222,21 +222,32 @@ def move_configurations_file(routers, krill, address_krill, image_frr, image_rou
     ]
     
     # Define all krill directories
-    krill_krill_directory = f"lab_{input_file}/krill/etc/krill"
-    haproxy_krill_directory = f"lab_{input_file}/krill/etc/haproxy"
-    root_krill_directory = f"lab_{input_file}/krill/root"
-    ca_certificates_krill_directory = f"lab_{input_file}/krill/usr/local/share/ca-certificates"
-    certs_krill_directory = f"lab_{input_file}/krill/etc/ssl/certs"
-    ssl_krill_directory = f"lab_{input_file}/krill/var/krill/data/ssl"
+    krill_krill_directory = f"output/lab_{input_file}/krill/etc/krill"
+    haproxy_krill_directory = f"output/lab_{input_file}/krill/etc/haproxy"
+    root_krill_directory = f"output/lab_{input_file}/krill/root"
+    ca_certificates_krill_directory = f"output/lab_{input_file}/krill/usr/local/share/ca-certificates"
+    certs_krill_directory = f"output/lab_{input_file}/krill/etc/ssl/certs"
+    ssl_krill_directory = f"output/lab_{input_file}/krill/var/krill/data/ssl"
+
+    # Create the attack.sh file
+    dir_shared = f"output/lab_{input_file}/shared"
+    os.makedirs(dir_shared, exist_ok=True)
+    path_input_attack = f"{dir_shared}/attack.sh"
+    attack_strings = attack.create_file_attack(hacker_node, victim_node, neighbor_dict)
+    write_file_in_path(attack_strings, "attack.sh", dir_shared)
+
+    # Move attack.sh to the hacker router's shared folder
+    routers[hacker_node].create_file_from_path(path_input_attack, "/shared/attack.sh")
+    print(f"attack.sh successfully copied into the hacker container {routers[hacker_node].name}.")
     
     for as_number in routers:
         # Define all router directories
-        certificates_dir = f"lab_{input_file}/certificates"
-        frr_directory = f"lab_{input_file}/router{as_number}/etc/frr"
-        root_directory = f"lab_{input_file}/router{as_number}/root"
-        ca_certificates_directory = f"lab_{input_file}/router{as_number}/usr/local/share/ca-certificates"
-        certs_directory = f"lab_{input_file}/router{as_number}/etc/ssl/certs"
-        etc_directory = f"lab_{input_file}/router{as_number}/etc"
+        certificates_dir = f"output/lab_{input_file}/certificates"
+        frr_directory = f"output/lab_{input_file}/router{as_number}/etc/frr"
+        root_directory = f"output/lab_{input_file}/router{as_number}/root"
+        ca_certificates_directory = f"output/lab_{input_file}/router{as_number}/usr/local/share/ca-certificates"
+        certs_directory = f"output/lab_{input_file}/router{as_number}/etc/ssl/certs"
+        etc_directory = f"output/lab_{input_file}/router{as_number}/etc"
 
         vtysh_conf = [
             "service integrated-vtysh-config",
@@ -325,7 +336,7 @@ def move_configurations_file(routers, krill, address_krill, image_frr, image_rou
 # Check if the state file exists
 state_file = "state.json"
 # Load configuration file
-config_file = "config.json"  # Name of the configuration file
+config_file = "input/config.json"  # Name of the configuration file
 config = load_config(config_file)
 
 # Read values from the configuration file
@@ -357,8 +368,11 @@ if not os.path.exists(state_file):
         print("Error: 'adoption_collector_peer' must be a percentage value between 0 and 100.")
         exit(1)
 
-    # Load or generate the graph
-    graph_file = "as_graph.json"
+    if not os.path.exists("output"):
+        os.makedirs("output")  # Create the output directory if it does not exist
+    
+    # Load or generate the graph of AS relationships
+    graph_file = "output/as_graph.json"
     if not os.path.exists(graph_file):
         parse_as_graph.parse(relations_file, graph_file)
 
@@ -370,10 +384,10 @@ if not os.path.exists(state_file):
 
     # Create the customer cone
     input_file, customer_cone_dict = customer_cone.create_specified_customer_cone(graph, specified_as)
-    print("Customer Cone successfully created and saved in 'customer_cone.json'")
+    print("Customer Cone successfully created and saved in 'output/customer_cone.json'")
 
     if show_statistics:
-        file_statistics_output = "statistics_customer_cone.json"
+        file_statistics_output = "output/statistics_customer_cone.json"
         statistics_customer_cone.save_statistics_to_json(customer_cone_dict, specified_as, file_statistics_output)
 
     # Save the current state to a file
@@ -412,7 +426,7 @@ while not os.path.exists("terminate.flag"):
     time.sleep(1)
 
 # Read saved node data from JSON
-with open("saved_nodes.json", "r") as f:
+with open("output/saved_nodes.json", "r") as f:
     saved_data = json.load(f)
     rpki_nodes = saved_data.get("rpki_nodes", [])
     collector_nodes = saved_data.get("collector_nodes", [])
@@ -447,7 +461,7 @@ image_krill = "kathara/krill3"
 input_file_name = os.path.splitext(os.path.basename(input_file))[0]
 
 # Ensure the '/lab_...' directory exists
-dir_lab = f"lab_{os.path.splitext(input_file_name)[0]}"
+dir_lab = f"output/lab_{os.path.splitext(input_file_name)[0]}"
 os.makedirs(dir_lab, exist_ok=True)
 
 # Function to modify the topology file by adding 'collector' and 'rpki' attributes
@@ -471,13 +485,6 @@ output_neighbor_dict = f"{dir_lab}/neighbor_dict.json"
 with open(output_neighbor_dict, "w") as f:
     json.dump(neighbor_dict, f, indent=4)
 
-# Create the attack.sh file where a malicious actor announces the victim's internal LAN
-dir_shared = f"{dir_lab}/shared"
-os.makedirs(dir_shared, exist_ok=True)
-path_input_attack = f"{dir_shared}/attack.sh"
-attack_strings = attack.create_file_attack(hacker_node, victim_node, neighbor_dict)
-write_file_in_path(attack_strings, "attack.sh", dir_shared)
-
 # Dynamically generate router startup configurations
 roa_list = roa_entry.generate_roa_entries(neighbor_dict, prefix_lan_krill)
 startup.startup_routers(lab, neighbor_dict, input_file_name, dict_collision_domain, address_krill, address_router_to_krill, roa_list)
@@ -492,24 +499,22 @@ daemons.create_daemons_file(neighbor_dict, input_file_name)
 gen_certificates(input_file_name)
 
 # Move configuration files to their appropriate locations
-move_configurations_file(routers, krill, address_krill, image_frr, image_routinator, image_krill, input_file_name)
+move_configurations_file(routers, krill, address_krill, image_frr, image_routinator, image_krill, input_file_name, hacker_node, victim_node, neighbor_dict)
 
 # Deploy the lab with all machines
 Kathara.get_instance().deploy_lab(lab)
 
-# Initialize Docker client
-client = docker.from_env(timeout=600)
-container_count = len(neighbor_dict)
+routers_count = len(routers) # Number of routers in the lab
 
 # Ensure BGP convergence and execute the attack
-bgp_convergence.ensure_bgp_convergence_and_execute_attack(client, container_count, hacker_node, path_input_attack)
+bgp_convergence.ensure_bgp_convergence_and_execute_attack(routers, routers_count, lab, hacker_node)
 
 # Wait for BGP convergence
-bgp_convergence.wait_for_convergence(client, container_count)
+bgp_convergence.wait_for_convergence(routers, routers_count, lab)
 
 # Get victim's LAN and prefix
 lan_victim = neighbor_dict.get(f"{victim_node}", {}).get("internalLan", None)
 prefix_base_victim = ".".join(lan_victim.split(".")[:3]) + ".0"
 
 # Perform BGP path checks
-bgp_aspath_check.bgp_check(hacker_node, victim_node, prefix_base_victim)
+bgp_aspath_check.bgp_check(routers, lab, hacker_node, victim_node, prefix_base_victim)

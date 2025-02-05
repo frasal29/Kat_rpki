@@ -13,8 +13,8 @@ def create_frr(neighbor_dict, input_file, prefix_lan_krill, prefer_customer, inv
     """
     isFirstRouter = True  # Flag to identify the first router, which is directly connected to Krill
     for as_number, details in neighbor_dict.items():
-        # Ensure the '/lab_.../startup' directory exists
-        frr_conf_directory = f"lab_{os.path.splitext(input_file)[0]}/router{as_number}/etc/frr"
+        # Ensure the '/output/lab_.../startup' directory exists
+        frr_conf_directory = f"output/lab_{os.path.splitext(input_file)[0]}/router{as_number}/etc/frr"
         os.makedirs(frr_conf_directory, exist_ok=True)
 
         # Name of the configuration file for the current router
@@ -200,7 +200,6 @@ def create_frr(neighbor_dict, input_file, prefix_lan_krill, prefer_customer, inv
                     "route-map rpkiPreferCust permit 80",
                     "!"
                     ])
-
 
         # Add route-maps for local preference based only on prefer customer
         elif prefer_customer and not isRPKI:

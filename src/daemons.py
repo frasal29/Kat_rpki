@@ -91,7 +91,7 @@ fabricd_options="  --daemon -A 127.0.0.1"
     # Create the daemons file for each router
     for as_number, details in neighbor_dict.items():
         # Ensure the '/lab_.../routerX/etc/frr' directory exists
-        daemons_directory = f"lab_{os.path.splitext(input_file)[0]}/router{as_number}/etc/frr"
+        daemons_directory = f"output/lab_{os.path.splitext(input_file)[0]}/router{as_number}/etc/frr"
         os.makedirs(daemons_directory, exist_ok=True)
 
         # Determine the content of the daemons file based on the RPKI parameter

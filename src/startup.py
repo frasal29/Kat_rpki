@@ -144,8 +144,8 @@ def startup_routers(lab, neighbor_dict, input_file, dict_collision_domain, addre
             f"router{as_number}.startup"
         )
 
-        # Ensure the '/lab_.../startup' directory exists
-        startup_directory = f"lab_{os.path.splitext(input_file)[0]}"
+        # Ensure the '/output/lab_.../startup' directory exists
+        startup_directory = f"output/lab_{os.path.splitext(input_file)[0]}"
         os.makedirs(startup_directory, exist_ok=True)
 
         # Also write the file in the 'startup' folder

@@ -126,7 +126,7 @@ def create_routers_and_links(lab, image_frr, image_routinator, image_krill, topo
         lab_lines.append(f"krill[env]=\"{line}\"")  # Add environment variables for Krill
 
     # Ensure the lab directory exists
-    lab_directory = f"lab_{os.path.splitext(input_file)[0]}"
+    lab_directory = f"output/lab_{os.path.splitext(input_file)[0]}"
     os.makedirs(lab_directory, exist_ok=True)
 
     # Write the configuration file to the lab directory

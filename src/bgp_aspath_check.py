@@ -1,25 +1,26 @@
 import docker
 import json
 import app_result
+from Kathara.manager.Kathara import Kathara
 
-def get_running_containers(client):
+def execute_command_in_container(machine_name, lab, command):
     """
-    Returns all running containers, excluding those with '_krill_' in their name.
+    Executes a command inside a container.
 
-    :param client: Docker client instance.
-    :return: A list of running container objects.
+    :param machine_name: Machine object kathara
+    :param command: Command to execute inside the container.
+    :return: Output of the command as a string.
     """
-    containers = client.containers.list()
-    for container in containers[:]:
-        if "_krill_" in container.name:  # Exclude containers related to Krill
-            containers.remove(container)
-    return containers
+    # Execute the command in the container
+    result, stderr, return_code = Kathara.get_instance().manager.exec(machine_name, command, wait=False, stream=False, lab=lab)
+    return result, stderr, return_code
 
-def analyze_bgp_path(container, hacker_node, victim_node, prefix, red_nodes, red_edge, green_nodes, green_edge, paths):
+def analyze_bgp_path(router, lab, hacker_node, victim_node, prefix, red_nodes, red_edge, green_nodes, green_edge, paths):
     """
     Analyzes the BGP path for a given prefix in a specific container.
 
-    :param container: Container to analyze.
+    :param router: Router object.
+    :param lab: Kathara lab instance.
     :param hacker_node: AS number of the hacker.
     :param victim_node: AS number of the victim.
     :param prefix: BGP prefix to analyze.
@@ -31,9 +32,7 @@ def analyze_bgp_path(container, hacker_node, victim_node, prefix, red_nodes, red
     """
     try:
         # Extract the router name (AS number) from the container name
-        container_name = container.name
-        parts = container_name.split("router")
-        router_name = parts[1].split("_")[0]
+        router_name = router.name.split("router")[1]
         print(f"Analyzing router {router_name}")
 
         # Identify if the router is the hacker or victim
@@ -44,11 +43,11 @@ def analyze_bgp_path(container, hacker_node, victim_node, prefix, red_nodes, red
 
         # Execute the BGP command inside the container
         command = f'vtysh -c "sh ip bgp {prefix} bestpath json"'
-        exec_result = container.exec_run(command, stdout=True, stderr=True)
-        output = exec_result.output.decode("utf-8").strip()
+        exec_result, stderr, return_code = execute_command_in_container(router.name, lab, command)
+        output = exec_result.decode("utf-8").strip()
 
         if not output or output == "{}":
-            print(f"No valid JSON output for container {container_name} with prefix {prefix}.")
+            print(f"No valid JSON output for container {router_name} with prefix {prefix}.")
             return
 
         # Parse the JSON result
@@ -94,12 +93,14 @@ def analyze_bgp_path(container, hacker_node, victim_node, prefix, red_nodes, red
                     green_edge.append(edge)
 
     except Exception as e:
-        print(f"Error while analyzing container {container_name}: {e}")
+        print(f"Error while analyzing container {router_name}: {e}")
 
-def bgp_check(hacker_node, victim_node, prefix_to_check):
+def bgp_check(routers, lab, hacker_node, victim_node, prefix_to_check):
     """
     Performs a BGP analysis to identify paths, nodes, and edges related to a hacker and a victim.
 
+    :param routers: Dictionary of router objects.
+    :param lab: Kathara lab instance.   
     :param hacker_node: AS number of the hacker.
     :param victim_node: AS number of the victim.
     :param prefix_to_check: BGP prefix to analyze.
@@ -111,17 +112,10 @@ def bgp_check(hacker_node, victim_node, prefix_to_check):
     green_edge = []
     paths = {}
 
-    # Connect to the Docker client
     try:
-        client = docker.from_env(timeout=300)
-        containers = get_running_containers(client)
-        
-        if not containers:
-            print("No containers found to analyze.")
-
         print("\nStarting BGP route analysis on routers...")
-        for container in containers:
-            analyze_bgp_path(container, hacker_node, victim_node, prefix_to_check, red_nodes, red_edge, green_nodes, green_edge, paths)
+        for router in routers.values():
+            analyze_bgp_path(router, lab, hacker_node, victim_node, prefix_to_check, red_nodes, red_edge, green_nodes, green_edge, paths)
 
         # Save the results to a JSON file
         output_data = {
@@ -134,25 +128,25 @@ def bgp_check(hacker_node, victim_node, prefix_to_check):
             "paths": paths
         }
 
-        output_file = "bgp_analysis_results.json"
+        output_file = "output/bgp_analysis_results.json"
         with open(output_file, "w") as json_file:
             json.dump(output_data, json_file, indent=4)
 
         print(f"\nBGP route analysis results saved in {output_file}")
 
         # Load additional input files for visualization
-        input_file = "customer_cone.json"
+        input_file = "output/customer_cone.json"
         with open(input_file, "r") as f:
             topology = json.load(f)
 
-        with open("bgp_analysis_results.json", 'r') as file:
+        with open("output/bgp_analysis_results.json", 'r') as file:
             results = json.load(file)
 
-        with open("saved_nodes.json", 'r') as file:
+        with open("output/saved_nodes.json", 'r') as file:
             saved_nodes = json.load(file)
 
         # Run the Dash app to visualize the results
         app_result.run_dash_app(topology, results, saved_nodes)
 
     except Exception as e:
-        print(f"Error while connecting to the Docker client or during execution: {e}")
+        print(f"Error: {e}")

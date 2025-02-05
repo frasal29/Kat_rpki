@@ -1,1 +1,8 @@
 /.venv
+as_graph.json
+bgp_analysis_results.json
+customer_cone.json
+saved_nodes.json
+statistics_customer_cone.json
+lab_customer_cone
+__pycache__

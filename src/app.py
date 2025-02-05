@@ -31,7 +31,7 @@ def run_dash_app(as_data, start_configuration):
             """
             Recursively add nodes and edges to the graph based on parent-to-customer and peer-to-peer relationships.
             """
-            # Add child nodes (provider-to-customer relationship)
+            # Add child nodes (provider-to-customer relationship)       
             for child in as_data[node].get("p2c", []):
                 G.add_edge(node, child, relation="c2p")  # Add c2p relationship
                 add_to_graph(child)
@@ -615,7 +615,7 @@ def run_dash_app(as_data, start_configuration):
 
             if trigger == "confirm-save-button" and n_clicks_confirm > 0:
                 # Save the configuration and terminate the server
-                with open("saved_nodes.json", "w") as f:
+                with open("output/saved_nodes.json", "w") as f:
                     json.dump({
                         "rpki_nodes": square_nodes,
                         "collector_nodes": blackCircle_nodes,
