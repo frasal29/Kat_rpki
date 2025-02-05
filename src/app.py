@@ -7,6 +7,7 @@ import json
 import os
 import signal
 import threading
+import time
 
 def run_dash_app(as_data, start_configuration):
     """
@@ -629,12 +630,11 @@ def run_dash_app(as_data, start_configuration):
 
                 # Close the confirmation modal first
                 def delayed_shutdown():
-                    import time
                     time.sleep(1)  # Delay before shutting down the server
                     shutdown_server()
 
                 threading.Thread(target=delayed_shutdown).start()
-                return dash.no_update, dash.no_update, confirm_modal_state  # Il popup si chiude subito
+                return dash.no_update, dash.no_update, confirm_modal_state  # Popup will close automatically
 
         return {"background-color": "white"}, is_error_modal_open, is_confirm_modal_open
 
