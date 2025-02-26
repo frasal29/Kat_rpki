@@ -127,7 +127,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=p2p_edges_x,
             y=p2p_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'dimgray'},
+            line={'width': 1.6, 'color': 'dimgray'},
             opacity=1,
             hoverinfo='skip',
             name='peer-to-peer (bidirectional)',
@@ -139,7 +139,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=c2p_edges_x,
             y=c2p_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'LightGray'},
+            line={'width': 1.6, 'color': 'LightGray'},
             opacity=1,
             hoverinfo='skip',
             name='customer-to-provider',
@@ -151,7 +151,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=red_edges_x,
             y=red_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'Tomato'},
+            line={'width': 1.6, 'color': 'Tomato'},
             opacity=1,
             hoverinfo='skip',
             name='route-advertising-attack',
@@ -163,7 +163,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=green_edges_x,
             y=green_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'Green'},
+            line={'width': 1.6, 'color': 'Green'},
             opacity=1,
             hoverinfo='skip',
             name='route-not-affecting-by-attack',
@@ -175,7 +175,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=red_green_edges_x,
             y=red_green_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'Yellow'},
+            line={'width': 1.6, 'color': 'Yellow'},
             opacity=1,
             hoverinfo='skip',
             name='route-both-attack-not-attack',
@@ -296,9 +296,9 @@ def run_dash_app(as_data, results, saved_nodes):
             mode='markers+text',  # Add 'text' to include labels
             hoverinfo="text",
             marker={
-                'size': 20,
+                'size': 40,
                 'color': [],  # Fill colors
-                'line': {'width': 2, 'color': []},  # Border colors
+                'line': {'width': 4, 'color': []},  # Border colors
                 'symbol': [] # Circle or square
             },
             text=[],  # Add the node names as text for labels

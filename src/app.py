@@ -106,7 +106,7 @@ def run_dash_app(as_data, start_configuration):
             x=p2p_edges_x,
             y=p2p_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'dimgray'},
+            line={'width': 2, 'color': 'dimgray'},
             opacity=1,
             hoverinfo='skip',
             name='peer-to-peer (bidirectional)',
@@ -119,7 +119,7 @@ def run_dash_app(as_data, start_configuration):
             x=c2p_edges_x,
             y=c2p_edges_y,
             mode='lines',
-            line={'width': 0.8, 'color': 'LightGray'},
+            line={'width': 2, 'color': 'LightGray'},
             opacity=1,
             hoverinfo='skip',
             name='customer-to-provider',
@@ -205,9 +205,9 @@ def run_dash_app(as_data, start_configuration):
             mode='markers+text',  # Add 'text' to include labels
             hoverinfo="text",
             marker={
-                'size': 20,
+                'size': 40,
                 'color': [],  # Fill colors
-                'line': {'width': 2, 'color': []},  # Border colors
+                'line': {'width': 4, 'color': []},  # Border colors
                 'symbol': [] # Circle or square
             },
             text=[],  # Add the node names as text for labels
