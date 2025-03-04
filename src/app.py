@@ -61,9 +61,9 @@ def run_dash_app(as_data, start_configuration):
 
     # Define colors for edges based on their type
     edge_colors = {
-        'c2p': 'LightGray',
-        'p2c': 'LightGray',
-        'p2p': 'dimgray'
+        'c2p': 'rgba(211, 211, 211, 0.5)',
+        'p2c': 'rgba(211, 211, 211, 0.5)',
+        'p2p': 'rgba(105, 105, 105, 0.5)'
     }
 
     # Function to create the Dash figure for the graph
@@ -106,7 +106,7 @@ def run_dash_app(as_data, start_configuration):
             x=p2p_edges_x,
             y=p2p_edges_y,
             mode='lines',
-            line={'width': 2, 'color': 'dimgray'},
+            line={'width': 2, 'color': 'rgba(105, 105, 105, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='peer-to-peer (bidirectional)',
@@ -119,7 +119,7 @@ def run_dash_app(as_data, start_configuration):
             x=c2p_edges_x,
             y=c2p_edges_y,
             mode='lines',
-            line={'width': 2, 'color': 'LightGray'},
+            line={'width': 2, 'color': 'rgba(211, 211, 211, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='customer-to-provider',
@@ -135,7 +135,7 @@ def run_dash_app(as_data, start_configuration):
             marker=dict(
                 size=20,
                 color='rgba(0,0,0,0)',
-                line=dict(width=2, color='LightGray'),
+                line=dict(width=2, color='rgba(211, 211, 211, 0.5)'),
                 symbol='circle'
             ),
             name='NotRPKI',
@@ -148,7 +148,7 @@ def run_dash_app(as_data, start_configuration):
             marker=dict(
                 size=20,
                 color='rgba(0,0,0,0)',
-                line=dict(width=2, color='LightGray'),
+                line=dict(width=2, color='rgba(211, 211, 211, 0.5)'),
                 symbol='square'
             ),
             name='RPKI',
@@ -161,7 +161,7 @@ def run_dash_app(as_data, start_configuration):
             marker=dict(
                 size=20,
                 color='rgba(0,0,0,0)',  # Trasparente
-                line=dict(width=2, color='Black')
+                line=dict(width=2, color='rgba(0, 0, 0, 0.3)')
             ),
             name='Collector',
             showlegend=True
@@ -172,8 +172,8 @@ def run_dash_app(as_data, start_configuration):
             mode='markers',
             marker=dict(
                 size=20,
-                color='darkred',
-                line=dict(width=2, color='darkred'),
+                color='rgba(139, 0, 0, 0.7)',
+                line=dict(width=2, color='rgba(139, 0, 0, 0.7)'),
                 symbol='circle'
             ),
             name='Hacker',
@@ -185,8 +185,8 @@ def run_dash_app(as_data, start_configuration):
             mode='markers',
             marker=dict(
                 size=20,
-                color='greenyellow',
-                line=dict(width=2, color='greenyellow'),
+                color='rgba(173, 255, 47, 0.7)',
+                line=dict(width=2, color='rgba(173, 255, 47, 0.7)'),
                 symbol='circle'
             ),
             name='Victim',
@@ -225,17 +225,17 @@ def run_dash_app(as_data, start_configuration):
 
             # Determine the fill color based on node type
             if node in selected_red_node:
-                node_color = 'darkred'  # Hacker
+                node_color = 'rgba(139, 0, 0, 0.7)'  # Hacker
             elif node in selected_green_node:
-                node_color = 'greenyellow'  # Victim
+                node_color = 'rgba(173, 255, 47, 0.7)'  # Victim
             else:
-                node_color = 'SkyBlue'  # Default color
+                node_color = 'rgba(135, 206, 235, 0.7)'  # Default color
 
             # Determine shape based on RPKI selection
             node_shape = 'square' if node in selected_square_nodes else 'circle'
 
             # Determine border color for Collector nodes
-            border_color = 'Black' if node in selected_blackCircle_nodes else 'LightGray'
+            border_color = 'rgba(0, 0, 0, 0.3)' if node in selected_blackCircle_nodes else 'rgba(211, 211, 211, 0.5)'
 
             # Add color, border, and shape to node markers
             node_trace['marker']['color'] += tuple([node_color])

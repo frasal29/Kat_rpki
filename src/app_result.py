@@ -53,9 +53,9 @@ def run_dash_app(as_data, results, saved_nodes):
 
     # Define edge colors for different relationship types
     edge_colors = {
-        'c2p': 'LightGray',
-        'p2c': 'LightGray',
-        'p2p': 'dimgray'
+        'c2p': 'rgba(211, 211, 211, 0.5)',
+        'p2c': 'rgba(211, 211, 211, 0.5)',
+        'p2p': 'rgba(105, 105, 105, 0.5)'
     }
 
     # Function to create the figure (visualization of the graph)
@@ -127,7 +127,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=p2p_edges_x,
             y=p2p_edges_y,
             mode='lines',
-            line={'width': 1.6, 'color': 'dimgray'},
+            line={'width': 1.6, 'color': 'rgba(105, 105, 105, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='peer-to-peer (bidirectional)',
@@ -139,7 +139,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=c2p_edges_x,
             y=c2p_edges_y,
             mode='lines',
-            line={'width': 1.6, 'color': 'LightGray'},
+            line={'width': 1.6, 'color': 'rgba(211, 211, 211, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='customer-to-provider',
@@ -151,7 +151,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=red_edges_x,
             y=red_edges_y,
             mode='lines',
-            line={'width': 1.6, 'color': 'Tomato'},
+            line={'width': 1.6, 'color': 'rgba(255, 99, 71, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='route-advertising-attack',
@@ -163,7 +163,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=green_edges_x,
             y=green_edges_y,
             mode='lines',
-            line={'width': 1.6, 'color': 'Green'},
+            line={'width': 1.6, 'color': 'rgba(0, 128, 0, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='route-not-affecting-by-attack',
@@ -175,7 +175,7 @@ def run_dash_app(as_data, results, saved_nodes):
             x=red_green_edges_x,
             y=red_green_edges_y,
             mode='lines',
-            line={'width': 1.6, 'color': 'Yellow'},
+            line={'width': 1.6, 'color': 'rgba(255, 255, 0, 0.5)'},
             opacity=1,
             hoverinfo='skip',
             name='route-both-attack-not-attack',
@@ -190,7 +190,7 @@ def run_dash_app(as_data, results, saved_nodes):
             marker=dict(
                 size=20,
                 color='rgba(0,0,0,0)',
-                line=dict(width=2, color='LightGray'),
+                line=dict(width=2, color='rgba(211, 211, 211, 0.5)'),
                 symbol='circle'
             ),
             name='NotRPKI',
@@ -204,7 +204,7 @@ def run_dash_app(as_data, results, saved_nodes):
             marker=dict(
                 size=20,
                 color='rgba(0,0,0,0)',
-                line=dict(width=2, color='LightGray'),
+                line=dict(width=2, color='rgba(211, 211, 211, 0.5)'),
                 symbol='square'
             ),
             name='RPKI',
@@ -218,7 +218,7 @@ def run_dash_app(as_data, results, saved_nodes):
             marker=dict(
                 size=20,
                 color='rgba(0,0,0,0)',  # Trasparent
-                line=dict(width=2, color='Black')
+                line=dict(width=2, color='rgba(0, 0, 0, 0.3)')
             ),
             name='Collector',
             showlegend=True
@@ -230,8 +230,8 @@ def run_dash_app(as_data, results, saved_nodes):
             mode='markers',
             marker=dict(
                 size=20,
-                color='darkred',
-                line=dict(width=2, color='darkred'),
+                color='rgba(139, 0, 0, 0.7)',
+                line=dict(width=2, color='rgba(139, 0, 0, 0.7)'),
                 symbol='circle'
             ),
             name='Hacker',
@@ -244,8 +244,8 @@ def run_dash_app(as_data, results, saved_nodes):
             mode='markers',
             marker=dict(
                 size=20,
-                color='greenyellow',
-                line=dict(width=2, color='greenyellow'),
+                color='rgba(173, 255, 47, 0.7)',
+                line=dict(width=2, color='rgba(173, 255, 47, 0.7)'),
                 symbol='circle'
             ),
             name='Victim',
@@ -258,8 +258,8 @@ def run_dash_app(as_data, results, saved_nodes):
             mode='markers',
             marker=dict(
                 size=20,
-                color='tomato',
-                line=dict(width=2, color='tomato'),
+                color='rgba(255, 99, 71, 0.7)',
+                line=dict(width=2, color='rgba(255, 99, 71, 0.7)'),
                 symbol='circle'
             ),
             name='AS hijacked',
@@ -272,8 +272,8 @@ def run_dash_app(as_data, results, saved_nodes):
             mode='markers',
             marker=dict(
                 size=20,
-                color='green',
-                line=dict(width=2, color='green'),
+                color='rgba(0, 128, 0, 0.7)',
+                line=dict(width=2, color='rgba(0, 128, 0, 0.7)'),
                 symbol='circle'
             ),
             name='AS not-affected',
@@ -317,16 +317,16 @@ def run_dash_app(as_data, results, saved_nodes):
             # Determine color (red for HACKER, green VICTIM)
             if node in red_nodes:
                 if node == selected_red_node:
-                    node_color = "darkred"
+                    node_color = 'rgba(139, 0, 0, 0.7)'
                 else:
-                    node_color = 'tomato'  # HACKER node
+                    node_color = 'rgba(255, 99, 71, 0.7)'  # HACKER node
             elif node in green_nodes:
                 if node == selected_green_node:
-                    node_color = "Greenyellow"
+                    node_color = 'rgba(173, 255, 47, 0.7)'
                 else:
-                    node_color = 'green'  # VICTIM node
+                    node_color = 'rgba(0, 128, 0, 0.7)'  # VICTIM node
             else:
-                node_color = 'SkyBlue'
+                node_color = 'rgba(135, 206, 235, 0.7)'
 
             # Determine color/shape inside node(square if RPKI mode)
             if node in selected_square_nodes:
@@ -336,9 +336,9 @@ def run_dash_app(as_data, results, saved_nodes):
 
             # Determine node border color (black if collector mode)
             if node in selected_blackCircle_nodes:
-                border_color = 'Black'
+                border_color = 'rgba(0, 0, 0, 0.3)'
             else:
-                border_color = 'LightGray'
+                border_color = 'rgba(211, 211, 211, 0.5)'
 
             node_trace['marker']['color'] += tuple([node_color])
             node_trace['marker']['line']['color'] += tuple([border_color])
@@ -366,19 +366,19 @@ def run_dash_app(as_data, results, saved_nodes):
             edge_str_rev = f"{edge[1]}->{edge[0]}"
 
             if (edge_str in red_edges or edge_str_rev in red_edges) and (edge_str in green_edges or edge_str_rev in green_edges):
-                arrowcolor = 'Yellow'
+                arrowcolor = 'rgba(255, 255, 0, 0.5)'
 
             elif (edge_str in red_edges or edge_str_rev in red_edges):
-                arrowcolor = 'Tomato'
+                arrowcolor = 'rgba(255, 99, 71, 0.5)'
 
             elif (edge_str in green_edges or edge_str_rev in green_edges):
-                arrowcolor = 'Green'
+                arrowcolor = 'rgba(0, 128, 0, 0.5)'
 
             elif G.edges[edge]['relation'] == 'p2p':
-                arrowcolor = 'dimgray'
+                arrowcolor = 'rgba(105, 105, 105, 0.5)'
 
             elif G.edges[edge]['relation'] in ['c2p', 'p2c']:
-                arrowcolor = 'LightGray'
+                arrowcolor = 'rgba(211, 211, 211, 0.5)'
 
             annotations.append(dict(
                 ax=ax, ay=ay, axref='x', ayref='y',
