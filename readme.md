@@ -1,6 +1,6 @@
 # RPKI-BGP Emulation Framework
 
-This project implements an emulation framework for BGP announcements and RPKI adoption in a network topology. The main script, `kat_rpki.py`, orchestrates the configuration, analysis, and emulation of attacks on the network. It includes tools to analyze AS relationships, generate configurations, simulate attacks on the BGP infrastructure, and calculate statistics for the customer cone of an AS.
+This project implements an emulation framework for BGP announcements and RPKI adoption in a network topology. The main script, `kat_rpki.py`, orchestrates the configuration, analysis, and emulation of attacks on the network. It includes tools to analyze AS relationships, generate configurations, emulate attacks on the BGP infrastructure, and calculate statistics for the customer cone of an AS.
 
 ---
 
@@ -8,7 +8,7 @@ This project implements an emulation framework for BGP announcements and RPKI ad
 
 ### Main Script
 
-- `kat_rpki.py`: The main script that manages the workflow, including topology creation, RPKI configurations, attack simulations, and statistics generation.
+- `kat_rpki.py`: The main script that manages the workflow, including topology creation, RPKI configurations, attack emulations, and statistics generation.
 
 ### Configuration and Input Files
 
