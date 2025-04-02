@@ -1,6 +1,6 @@
-# RPKI-BGP Simulation Framework
+# RPKI-BGP Emulation Framework
 
-This project implements a simulation framework for BGP announcements and RPKI adoption in a network topology. The main script, `kat_rpki.py`, orchestrates the configuration, analysis, and simulation of attacks on the network. It includes tools to analyze AS relationships, generate configurations, simulate attacks on the BGP infrastructure, and calculate statistics for the customer cone of an AS.
+This project implements an emulation framework for BGP announcements and RPKI adoption in a network topology. The main script, `kat_rpki.py`, orchestrates the configuration, analysis, and emulation of attacks on the network. It includes tools to analyze AS relationships, generate configurations, simulate attacks on the BGP infrastructure, and calculate statistics for the customer cone of an AS.
 
 ---
 
@@ -31,7 +31,7 @@ This project implements a simulation framework for BGP announcements and RPKI ad
    - `frr.py`: Generates configuration files for FRRouting (FRR).
    - `startup.py`: Automates the creation of startup scripts for routers.
 
-3. **Simulation and Visualization**
+3. **Emulation and Visualization**
 
    - `app.py`: Provides a Dash-based GUI for visualizing and interacting with the network topology.
    - `app_result.py`: Visualizes attack results and their impact on the network.
@@ -137,7 +137,7 @@ This script:
 
 Use the Dash app to select RPKI nodes, collectors, and identify hacker/victim ASes.
 
-### 4. Simulate and Analyze Attacks
+### 4. Emulate and Analyze Attacks
 
 - Generate attack scripts with `attack.py`.
 - Ensure BGP convergence with `bgp_convergence.py`.
@@ -176,7 +176,7 @@ The Dash GUI shows the impact of RPKI adoption, attack simulations, and customer
 
 ## Future Work
 
-- **Support for Additional Attack Scenarios**: Include new simulation strategies to expand testing.
+- **Support for Additional Attack Scenarios**: Include new emulation strategies to expand testing.
 - **Enhanced Visualization**: Add advanced features for analyzing large-scale topologies.
 - **Integration with Real-World Datasets**: Use real AS data to validate tests.
 
